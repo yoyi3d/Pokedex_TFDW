@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedle Clone</title>
+    <link rel="stylesheet" href="css/game_style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Pokedle Clone</h1>
+        
+        <img id="pokemon-image" class="pokemon-image" src="" alt="Pokemon a adivinar">
+        
+        <div class="guess-container">
+            <input type="text" id="pokemon-guess" placeholder="Escribe un Pokémon...">
+            <button id="guess-button">Adivinar</button>
+        </div>
+        
+        <div class="attempts">Intentos: <span id="attempts-count">0</span></div>
+        
+        <div class="hints" id="hints-container">
+            <!-- Las pistas salen aquí -->
+        </div>
+    </div>
+
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/game.js"></script>
+</body>
+</html>
