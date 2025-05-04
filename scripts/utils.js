@@ -20,7 +20,73 @@ const typeColors = {
     fairy: '#EE99AC'
 };
 
-// Comparar números (para ID, altura, peso)
+// Para las generaciones de pokemon
+const generationRanges = {
+    1: { start: 1, end: 151 },   // Kanto
+    2: { start: 152, end: 251 }, // Johto
+    3: { start: 252, end: 386 }, // Hoenn
+    4: { start: 387, end: 493 }, // Sinnoh
+    5: { start: 494, end: 649 }, // Unova
+    6: { start: 650, end: 721 }, // Kalos
+    7: { start: 722, end: 809 }, // Alola
+    8: { start: 810, end: 905 }, // Galar
+    9: { start: 906, end: 1025 } // Paldea
+};
+
+function getGenerationByPokemonId(id) {
+    for (const [gen, range] of Object.entries(generationRanges)) {
+        if (id >= range.start && id <= range.end) {
+            return parseInt(gen);
+        }
+    }
+    return 1; 
+}
+
+// Cache para almacenar datos de Pokémon
+const pokemonCache = {};
+
+// Obtener Pokémon por nombre o ID
+async function fetchPokemon(identifier) {
+    if (pokemonCache[identifier]) {
+        return pokemonCache[identifier];
+    }
+    
+    try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${identifier}`);
+        const data = await response.json();
+        
+        const pokemonData = {
+            name: data.name,
+            id: data.id,
+            types: data.types.map(t => t.type.name),
+            height: data.height,
+            weight: data.weight,
+            generation: getGenerationByPokemonId(data.id),
+            sprites: {
+                front_default: data.sprites.front_default || 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'
+            }
+        };
+        
+        pokemonCache[identifier] = pokemonData;
+        return pokemonData;
+    } catch (error) {
+        console.error('Error fetching Pokémon:', error);
+        return null;
+    }
+}
+
+// Comparar las generaciones
+function compareGenerations(guessedGen, actualGen) {
+    if (guessedGen === actualGen) {
+        return { match: true, hint: '' };
+    }
+    return { 
+        match: false, 
+        hint: guessedGen > actualGen ? 'Generación anterior' : 'Generación posterior' 
+    };
+}
+
+//Comparar números (para ID, altura, peso)
 function compareNumbers(guessed, actual) {
     if (guessed === actual) {
         return { match: true, hint: '' };
@@ -44,7 +110,6 @@ function compareArrays(guessed, actual) {
     return 'Ningún tipo coincide';
 }
 
-// Verificar si dos arrays son iguales
 function arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -60,7 +125,7 @@ function arraysEqual(a, b) {
     return true;
 }
 
-// Crear la pista
+//Crear la pista
 function createHint(category, value, isCorrect, hintText = '') {
     const hintDiv = document.createElement('div');
     hintDiv.className = 'hint-row';
@@ -82,24 +147,14 @@ function createHint(category, value, isCorrect, hintText = '') {
     return hintDiv;
 }
 
-// Obtener Pokémon por nombre o ID
-async function fetchPokemon(identifier) {
+//Obtener lista de todos los Pokémon
+async function fetchAllPokemonNames(limit = 151) {
     try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${identifier}`);
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
         const data = await response.json();
-        
-        return {
-            name: data.name,
-            id: data.id,
-            types: data.types.map(t => t.type.name),
-            height: data.height,
-            weight: data.weight,
-            sprites: {
-                front_default: data.sprites.front_default
-            }
-        };
+        return data.results.map(p => p.name);
     } catch (error) {
-        console.error('Error fetching Pokémon:', error);
-        return null;
+        console.error('Error fetching Pokémon list:', error);
+        return [];
     }
 }
