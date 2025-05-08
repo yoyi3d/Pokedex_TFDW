@@ -22,6 +22,7 @@
 .hint-row:nth-child(4) { animation-delay: 0.7s; }
 .hint-row:nth-child(5) { animation-delay: 0.9s; }
 .hint-row:nth-child(6) { animation-delay: 1.1s; }
+.hint-row:nth-child(7) { animation-delay: 1.3s; }
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }

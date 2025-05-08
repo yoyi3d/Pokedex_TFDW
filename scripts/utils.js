@@ -53,7 +53,9 @@ async function fetchPokemon(identifier) {
     
     try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${identifier}`);
+        const response1 = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${identifier}`);
         const data = await response.json();
+        const data1 = await response1.json();
         
         const pokemonData = {
             name: data.name,
@@ -61,6 +63,7 @@ async function fetchPokemon(identifier) {
             types: data.types.map(t => t.type.name),
             height: data.height,
             weight: data.weight,
+            habitat: data1.habitat,
             generation: getGenerationByPokemonId(data.id),
             sprites: {
                 front_default: data.sprites.front_default || 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'
@@ -108,6 +111,18 @@ function compareArrays(guessed, actual) {
     }
     
     return 'Ningún tipo coincide';
+}
+
+function compareArrays1(guessed, actual) {
+    if (arraysEqual(guessed, actual)) return '';
+    
+    const commonElements = guessed.filter(element => actual.includes(element));
+    
+    if (commonElements.length > 0) {
+        return `Tienes ${commonElements.length} habitat(s) correcto(s)`;
+    }
+    
+    return 'Ningún habitat coincide';
 }
 
 function arraysEqual(a, b) {

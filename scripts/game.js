@@ -1,7 +1,7 @@
 //Variables del juego
 let pokemonToGuess = null;
 let attempts = 0;
-const maxPokemon = 1025; //Solo primera generación para simplificar
+const maxPokemon = 1025; 
 let allPokemonNames = [];
 
 //Inicializar el juego
@@ -142,6 +142,12 @@ function comparePokemon(guessedPokemon) {
     const weightHint = createHint('Peso', `${guessedPokemon.weight / 10}kg`, 
                                 weightComparison.match, weightComparison.hint);
     hintsContainer.appendChild(weightHint);
+
+    //Habitat(s)
+    const habitatHint = createHint('Habitat', guessedPokemon.habitat, guessedPokemon.habitat === pokemonToGuess.habitat);
+    hintRow.appendChild(habitatHint);
+    
+    hintsContainer.appendChild(habitatHint);
 
     //Generación
     const genComparison = compareGenerations(guessedPokemon.generation, pokemonToGuess.generation);
