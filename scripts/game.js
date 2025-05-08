@@ -39,11 +39,6 @@ async function handleGuess() {
     //Obtener datos del Pokémon adivinado
     const guessedPokemon = await fetchPokemon(guess);
     
-    if (!guessedPokemon) {
-        alert('¡Pokémon no encontrado! Intenta con otro nombre.');
-        return;
-    }
-    
     attempts++;
     document.getElementById('attempts-count').textContent = attempts;
     
@@ -58,9 +53,8 @@ async function handleGuess() {
     if (guessedPokemon.name === pokemonToGuess.name) {
         document.getElementById('pokemon-image').classList.add('revealed');
         setTimeout(() => {
-            alert(`¡Felicidades! Adivinaste el Pokémon en ${attempts} intentos.`);
             initGame(); //Reiniciar juego
-        }, 500);
+        }, 2500);
     }
 }
 
