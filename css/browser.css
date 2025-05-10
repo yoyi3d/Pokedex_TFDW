@@ -1,0 +1,99 @@
+body {
+    background: linear-gradient(to bottom, #ff3b3f 50%, white 50%);
+    overflow: hidden;
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .container-fixed {
+    width: 80vw;
+    height: 90vh;
+    position: relative;
+    margin: 2vh auto;
+    border-top: 1vh solid #ff3b3f;
+    background-color: transparent;
+  }
+  
+  .pokeball {
+    position: absolute;
+    width: 15vw;
+    height: 15vw;
+    animation: spin 10s linear infinite;
+    z-index: 0;
+  }
+  
+  .top-left {
+    top: -7.5vw;
+    left: -7.5vw;
+  }
+  
+  .bottom-right {
+    bottom: -7.5vw;
+    right: -7.5vw;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .search-bar {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40vw;
+    z-index: 1;
+  }
+  
+  .buttons-group {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2vw;
+  }
+  
+  .pikachu-btn {
+    position: absolute;
+    bottom: 3vh;
+    left: 3vw;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .pikachu-img {
+    width: 10vw;
+    max-width: 150px;
+  }
+  
+  .fixed-button {
+    background-color: #e28989;
+    border-radius: 1rem;
+    border: 2px solid black;
+    font-family: 'Comic Sans MS', cursive;
+    font-weight: bold;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+  }
+  
+  .search-input {
+    font-family: 'Comic Sans MS', cursive;
+    font-size: 1.2rem;
+  }
+  
+  .search-btn {
+    background-color: black;
+    color: yellow;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .search-btn i {
+    line-height: 2.5rem;
+  }
+  
