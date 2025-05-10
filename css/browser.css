@@ -21,6 +21,19 @@ html {
   overflow: hidden;
 }
 
+#fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  opacity: 0;
+  z-index: 99999;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
 .pokeball-half {
   position: fixed;
   width: 100vw;
@@ -78,13 +91,13 @@ html {
 }
 
 .top-left {
-  top: -10vw;
+  top: -18vw;
   left: -10vw;
 }
 
 .bottom-right {
-  bottom: -10vw;
-  right: -10vw;
+  bottom: -18vw;
+  right: -16vw;
 }
 
 @keyframes spin {

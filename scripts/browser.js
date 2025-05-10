@@ -16,6 +16,7 @@ $(document).ready(function () {
     const whiteHalf = document.querySelector('.pokeball-half.white');
     const searchBar = document.querySelector('.search-bar');
     const pokeballCircle = document.getElementById('pokeball-circle');
+    const overlay = document.getElementById('fade-overlay');
 
     const audio = new Audio('resources/audio/pokeball_open.mp3');
 
@@ -55,7 +56,12 @@ $(document).ready(function () {
       });
 
       audio.addEventListener('ended', () => {
-        window.location.href = targetUrl;
+
+        overlay.style.opacity = 1;
+
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 1000);
       });
     }, 1300);
   };

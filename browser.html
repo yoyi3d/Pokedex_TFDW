@@ -36,37 +36,7 @@
     </div>
   </div>
 
-  <script>
-    function animateAndRedirect(targetUrl) {
-
-      document.querySelectorAll('.fixed-button, .pokeball, .pikachu-btn').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transition = 'opacity 0.5s ease';
-      });
-
-      const searchBar = document.querySelector('.search-bar');
-      const pokeballCircle = document.getElementById('pokeball-circle');
-      const redHalf = document.querySelector('.pokeball-half.red');
-      const whiteHalf = document.querySelector('.pokeball-half.white');
-
-      searchBar.style.transition = 'all 0.8s ease-in-out';
-      searchBar.style.width = '60px';
-      searchBar.style.borderRadius = '50%';
-      searchBar.style.overflow = 'hidden';
-      searchBar.style.justifyContent = 'center';
-
-      setTimeout(() => {
-        pokeballCircle.style.opacity = 1;
-
-        redHalf.style.transform = 'translateY(-100%)';
-        whiteHalf.style.transform = 'translateY(100%)';
-
-        setTimeout(() => {
-          window.location.href = targetUrl;
-        }, 1200);
-      }, 600);
-    }
-  </script>
+  <div id="fade-overlay"></div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
