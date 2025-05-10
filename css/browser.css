@@ -1,8 +1,53 @@
 body {
-    background: linear-gradient(to bottom, #ff3b3f 50%, white 50%);
     margin: 0;
     overflow: hidden;
     font-size: 1.1rem;
+    position: relative;
+  }
+  
+  /* Fondo animado dividido para pokeball */
+  .pokeball-half {
+    position: fixed;
+    width: 100%;
+    height: 50%;
+    z-index: -1;
+    transition: transform 1s ease-in-out;
+  }
+  
+  .red {
+    background-color: #ff3b3f;
+    top: 0;
+  }
+  
+  .white {
+    background-color: white;
+    bottom: 0;
+  }
+  
+  #black-line {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: black;
+    z-index: 0;
+  }
+  
+  /* Elemento central circular (pokeball) */
+  #pokeball-circle {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    background: white;
+    border: 5px solid black;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    opacity: 0;
+    transition: transform 1s ease-in-out, opacity 0.5s ease-in;
   }
   
   .container-fixed {
@@ -11,6 +56,7 @@ body {
     position: relative;
     margin: 2vh auto;
     background-color: transparent;
+    z-index: 1;
   }
   
   .pokeball {
@@ -39,7 +85,7 @@ body {
   
   .search-bar {
     position: absolute;
-    top: 50%; 
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 40vw;
@@ -50,6 +96,7 @@ body {
     background-color: white;
     overflow: hidden;
     align-items: center;
+    transition: all 1s ease;
   }
   
   .search-input {
