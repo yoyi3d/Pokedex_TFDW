@@ -17,6 +17,8 @@ $(document).ready(function () {
     const searchBar = document.querySelector('.search-bar');
     const pokeballCircle = document.getElementById('pokeball-circle');
 
+    const audio = new Audio('resources/audio/pokeball_open.mp3');
+
     document.querySelectorAll('.fixed-button, .pokeball, .pikachu-btn').forEach(el => {
       el.style.opacity = '0';
       el.style.transition = 'opacity 0.5s ease';
@@ -31,27 +33,30 @@ $(document).ready(function () {
     searchBar.style.alignItems = 'center';
     searchBar.innerHTML = '';
 
-
     setTimeout(() => {
       pokeballCircle.style.opacity = 1;
     }, 800);
 
-
     setTimeout(() => {
       const OFFSET = '-600px'; // AAAAAAAAAAA
-    
+
       redHalf.style.transform = `translateY(${OFFSET})`;
       whiteHalf.style.transform = 'translateY(100%)';
-    
+
       searchBar.style.transition = 'transform 1s ease-in-out';
       pokeballCircle.style.transition = 'transform 1s ease-in-out';
-    
+
       searchBar.style.transform = `translate(-50%, ${OFFSET})`;
       pokeballCircle.style.transform = `translate(-50%, ${OFFSET})`;
-    }, 1300);
 
-    setTimeout(() => {
-      window.location.href = targetUrl;
-    }, 2400);
+      audio.play().catch(err => {
+        console.error('Error al reproducir el audio:', err);
+        window.location.href = targetUrl;
+      });
+
+      audio.addEventListener('ended', () => {
+        window.location.href = targetUrl;
+      });
+    }, 1300);
   };
 });
