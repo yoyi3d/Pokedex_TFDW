@@ -11,9 +11,8 @@
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-
   <!-- Custom CSS -->
-  <!-- <link rel="stylesheet" href="css/pokedex_style.css" /> -->
+   <link rel="stylesheet" href="css/pokedex_style.css">
 </head>
 
 <body>
@@ -22,8 +21,12 @@
     <div class="d-flex flex-wrap gap-3 justify-content-evenly align-items-center">
       <span class="text-white fw-bold">ORDENAR POR</span>
 
-      <button id="sort-name" class="btn btn-light"> A - Z </button>
-      <button id="sort-number" class="btn btn-light">Número</button>
+      <!-- Desplegable para A-Z y Número -->
+      <select class="form-select w-auto" id="sort-options">
+        <option value="">Ordenar por</option>
+        <option value="name">A - Z</option>
+        <option value="number">Número</option>
+      </select>
 
       <select class="form-select w-auto" id="filter-type">
         <option value="">Tipo</option>
@@ -66,6 +69,7 @@
       </select>
       
 
+
       <div class="input-group w-auto" style="min-width: 200px;">
         <input id="search-input" type="text" class="form-control" placeholder="Buscar..." />
         <button class="btn btn-light"><i class="bi bi-search"></i></button>
@@ -77,7 +81,13 @@
     <div class="row" id="pokemonContainer">
         <!-- Las tarjetas de Pokémon se insertarán aquí dinámicamente -->
     </div>
-</div>
+
+    <!-- Paginación -->
+    <div class="d-flex justify-content-between mt-4">
+      <button id="prev-button" class="btn btn-primary" disabled>&laquo; Anterior</button>
+      <button id="next-button" class="btn btn-primary" disabled>Siguiente &raquo;</button>
+    </div>
+  </div>
 
 
   <!-- jQuery -->
