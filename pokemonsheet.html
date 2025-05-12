@@ -3,60 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokédex - Charizard</title>
+    
+    <title>POKÉMON - WIKI</title>
+    
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">    
     
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <!-- Custom CSS -->
+    <!-- CSS -->
     <link rel="stylesheet" href="css/pokemonsheet_style.css">
+
 </head>
 <body>
     <div class="container">
-        <div class="loading-spinner" id="loadingSpinner">
+        
+        <div id="loadingSpinner">
+            
             <div class="spinner-border text-danger" role="status">
                 <span class="visually-hidden">Cargando...</span>
             </div>
+            
             <p class="mt-2">Cargando información...</p>
+        
         </div>
-
-        <div class="pokemon-card" id="pokemonCard">
-            <div class="pokemon-header">
-                <h2 id="pokemonName"></h2>
-            </div>
-            <div class="text-center p-4">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" 
-                     alt="Charizard" class="pokemon-image img-fluid" id="pokemonImage">
-                <p id="pokemonDescription" class="mt-3 fst-italic"></p>
-                <div class="d-flex justify-content-center mb-3" id="typesContainer">
-                    <span class="type-badge fire"></span>
-                    <span class="type-badge flying"></span>
-                </div>
-            </div>
-            <div class="pokemon-stats">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Categoría:</strong> <span id="pokemonSpecies"></span></p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Altura:</strong> <span id="pokemonHeight"></span> m</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Peso:</strong> <span id="pokemonWeight"></span> kg</p>
-                    </div>
-                    <div class="col-md-6">
-                        <p><strong>Habilidad:</strong> <span id="pokemonAbility"></span></p>
-                    </div>
-                </div>
-            </div>
+        
+        <div class="pokemon-card" id="pokemonCard" style="display: none;">
         </div>
     </div>
 
-    <!-- Bootstrap JS y Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Nuestro JavaScript -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Script Principal -->
     <script src="scripts/pokemonsheet.js"></script>
 </body>
 </html>

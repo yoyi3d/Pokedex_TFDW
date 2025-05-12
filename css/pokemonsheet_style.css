@@ -1,50 +1,158 @@
+:root {
+    --fuego: #F08030;
+    --agua: #6890F0;
+    --planta: #78C850;
+    --eléctrico: #F8D030;
+    --psíquico: #F85888;
+    --hielo: #98D8D8;
+    --dragón: #7038F8;
+    --siniestro: #705848;
+    --hada: #EE99AC;
+    --normal: #A8A878;
+    --lucha: #C03028;
+    --volador: #A890F0;
+    --veneno: #A040A0;
+    --tierra: #E0C068;
+    --roca: #B8A038;
+    --bicho: #A8B820;
+    --fantasma: #705898;
+    --acero: #B8B8D0;
+}
+
 body {
-    background-color: #f8f9fa;
+    background-color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    padding: 20px;
 }
+
 .pokemon-card {
-    max-width: 600px;
-    margin: 2rem auto;
+    max-width: 400px;
+    margin: 0 auto;
     border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    background-color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    border: none;
+    transition: all 0.3s ease;
 }
+
 .pokemon-header {
-    background-color: #ff6b6b;
-    color: white;
     padding: 1.5rem;
     text-align: center;
+    color: #333;
+    position: relative;
 }
-.pokemon-image {
+
+.pokemon-number {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.2);
+    font-size: 1.2rem;
+}
+
+.pokemon-name {
+    font-weight: bold;
+    font-size: 1.8rem;
+    text-transform: capitalize;
+    margin: 0;
+    color: #333;
+}
+
+.pokemon-image-container {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
     width: 200px;
     height: 200px;
     margin: 0 auto;
-    display: block;
-}
-.type-badge {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-weight: bold;
-    margin-right: 0.5rem;
-}
-.fire {
-    background-color: #fd7d24;
-    color: white;
-}
-.flying {
-    background-color: #3dc7ef;
-    color: white;
-}
-.pokemon-stats {
-    padding: 1.5rem;
-}
-.loading-spinner {
-    display: none;
-    text-align: center;
-    margin: 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para otros tipos de Pokémon */
+.pokemon-image {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+}
+
+.pokemon-description {
+    font-style: italic;
+    color: #555;
+    padding: 0 20px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.pokemon-types {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.type-badge {
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pokemon-stats {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 0 0 15px 15px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+}
+
+.stat-label {
+    font-weight: bold;
+    color: #666;
+}
+
+.stat-value {
+    color: #333;
+}
+
+#loadingSpinner {
+    text-align: center;
+    margin: 50px 0;
+}
+
+/* Clases dinámicas para el fondo según tipo */
+.card-fuego { background: linear-gradient(135deg, #FFF3F0 0%, #FFE5DE 100%); border-top: 5px solid var(--fire); }
+.card-agua { background: linear-gradient(135deg, #F0F7FF 0%, #E0EFFF 100%); border-top: 5px solid var(--water); }
+.card-planta { background: linear-gradient(135deg, #F2FFF0 0%, #E0FFDE 100%); border-top: 5px solid var(--grass); }
+.card-eléctrico { background: linear-gradient(135deg, #FFFDEA 0%, #FFF8D0 100%); border-top: 5px solid var(--electric); }
+.card-psíquico { background: linear-gradient(135deg, #FFEEF5 0%, #FFE0EB 100%); border-top: 5px solid var(--psychic); }
+.card-hielo { background: linear-gradient(135deg, #F0FDFF 0%, #E0F7FF 100%); border-top: 5px solid var(--ice); }
+.card-dragón { background: linear-gradient(135deg, #F0E8FF 0%, #E0D0FF 100%); border-top: 5px solid var(--dragon); }
+.card-siniestro { background: linear-gradient(135deg, #F0EEEC 0%, #E0DEDC 100%); border-top: 5px solid var(--dark); }
+.card-hada { background: linear-gradient(135deg, #FFEEF2 0%, #FFE0E8 100%); border-top: 5px solid var(--fairy); }
+.card-normal { background: linear-gradient(135deg, #F5F5F5 0%, #E5E5E5 100%); border-top: 5px solid var(--normal); }
+.card-lucha { background: linear-gradient(135deg, #FFEEED 0%, #FFE0DE 100%); border-top: 5px solid var(--fighting); }
+.card-volador { background: linear-gradient(135deg, #F0EEFF 0%, #E0DEFF 100%); border-top: 5px solid var(--flying); }
+.card-veneno { background: linear-gradient(135deg, #F5EEF5 0%, #E5DEE5 100%); border-top: 5px solid var(--poison); }
+.card-tierra { background: linear-gradient(135deg, #F5F0E8 0%, #E5E0D8 100%); border-top: 5px solid var(--ground); }
+.card-roca { background: linear-gradient(135deg, #F5F2E8 0%, #E5E2D8 100%); border-top: 5px solid var(--rock); }
+.card-bicho { background: linear-gradient(135deg, #F5F8E8 0%, #E5F0D8 100%); border-top: 5px solid var(--bug); }
+.card-fantasma { background: linear-gradient(135deg, #F0EEF5 0%, #E0DEE5 100%); border-top: 5px solid var(--ghost); }
+.card-acero { background: linear-gradient(135deg, #F0F0F5 0%, #E0E0E5 100%); border-top: 5px solid var(--steel); }
+
+/* Estilos para los tipos de Pokémon */       
+.fire { background-color: #f08030; color: white; }
+.flying { background-color: #a890f0; color: white; }
 .grass { background-color: #9bcc50; color: white; }
 .poison { background-color: #b97fc9; color: white; }
 .water { background-color: #4592c4; color: white; }
