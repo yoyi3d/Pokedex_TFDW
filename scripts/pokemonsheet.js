@@ -1,4 +1,7 @@
-const DEFAULT_POKEMON = 'charizard'; // Pokémon por defecto
+$(document).ready(function() {
+    $('#loadingSpinner').show();
+    loadPokemon('charizard');
+});
 
 // TIPOS DE INGLÉS A ESPAÑOL
 const typeTranslations = {
@@ -44,153 +47,168 @@ const typeColors = {
     steel: '#B8B8D0'
 };
 
-// Colores de fondo para la tarjeta según tipo primario
-const cardBackgrounds = {
-    fire: 'linear-gradient(135deg, #FFF3F0 0%, #FFE5DE 100%)',
-    water: 'linear-gradient(135deg, #F0F7FF 0%, #E0EFFF 100%)',
-    grass: 'linear-gradient(135deg, #F2FFF0 0%, #E0FFDE 100%)',
-    electric: 'linear-gradient(135deg, #FFFDEA 0%, #FFF8D0 100%)',
-    psychic: 'linear-gradient(135deg, #FFEEF5 0%, #FFE0EB 100%)',
-    ice: 'linear-gradient(135deg, #F0FDFF 0%, #E0F7FF 100%)',
-    dragon: 'linear-gradient(135deg, #F0E8FF 0%, #E0D0FF 100%)',
-    dark: 'linear-gradient(135deg, #F0EEEC 0%, #E0DEDC 100%)',
-    fairy: 'linear-gradient(135deg, #FFEEF2 0%, #FFE0E8 100%)',
-    normal: 'linear-gradient(135deg, #F5F5F5 0%, #E5E5E5 100%)',
-    fighting: 'linear-gradient(135deg, #FFEEED 0%, #FFE0DE 100%)',
-    flying: 'linear-gradient(135deg, #F0EEFF 0%, #E0DEFF 100%)',
-    poison: 'linear-gradient(135deg, #F5EEF5 0%, #E5DEE5 100%)',
-    ground: 'linear-gradient(135deg, #F5F0E8 0%, #E5E0D8 100%)',
-    rock: 'linear-gradient(135deg, #F5F2E8 0%, #E5E2D8 100%)',
-    bug: 'linear-gradient(135deg, #F5F8E8 0%, #E5F0D8 100%)',
-    ghost: 'linear-gradient(135deg, #F0EEF5 0%, #E0DEE5 100%)',
-    steel: 'linear-gradient(135deg, #F0F0F5 0%, #E0E0E5 100%)'
-};
-
-$(document).ready(function() {
-    console.log('Documento listo - Iniciando carga de Pokémon...');
-    
-    // Mostrar spinner
-    $('#loadingSpinner').show();
-    
-    // Cargar Pokémon
-    loadPokemon(DEFAULT_POKEMON);
-});
-
+// Función que carga la ficha del Pokémon
 async function loadPokemon(pokemonName) {
     try {
-        console.log(`Cargando datos de ${pokemonName}...`);
+        // Nombre
+        const pokemon = await $.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`);
         
-        // 1. Obtener datos básicos del Pokémon
-        const pokemonData = await $.ajax({
-            url: `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`,
-            method: 'GET',
-            timeout: 10000 // 10 segundos de timeout
-        });
+        // Categoría
+        const species = await $.get(pokemon.species.url);
         
-        console.log('Datos básicos recibidos:', pokemonData);
-
-        // 2. Obtener datos de la especie
-        const speciesData = await $.ajax({
-            url: pokemonData.species.url,
-            method: 'GET',
-            timeout: 10000
-        });
+        // Muestra solo la imagen del Pokémon y su info...
+        displayPokemon(pokemon, species, []);
         
-        console.log('Datos de especie recibidos:', speciesData);
-
-        // 3. Mostrar los datos
-        displayPokemon(pokemonData, speciesData);
+        // ...y luego carga la info de la cadena evolutiva (si la tuviera)
+        try {
+            const evolutionChain = await $.get(species.evolution_chain.url);
+            const evolutionData = await getEvolutionChain(evolutionChain.chain);
+            updateEvolutionDisplay(evolutionData);
+        } catch (e) {
+            console.log("No se pudo cargar la cadena evolutiva", e);
+        }
         
     } catch (error) {
-        console.error('Error al cargar Pokémon:', error);
+        console.error('Error:', error);
         showError();
     } finally {
-        // Ocultar spinner
         $('#loadingSpinner').hide();
     }
+}
+
+// Función que se encarga de la parte de la línea evolutiva
+async function getEvolutionChain(chain) {
+    const evolutionChain = [];
+    let current = chain;
+    
+    while (current && evolutionChain.length < 3) {
+        try {
+            const pokemonData = await $.get(`https://pokeapi.co/api/v2/pokemon/${current.species.name}`);
+            
+            evolutionChain.push({
+                name: current.species.name,
+                image: pokemonData.sprites.other['official-artwork'].front_default
+            });
+            
+            current = current.evolves_to[0];
+        } catch (e) {
+            console.error("Error cargando evolución", e);
+            break;
+        }
+    }
+    
+    return evolutionChain;
 }
 
 function displayPokemon(pokemon, species) {
     const primaryType = pokemon.types[0].type.name;
     const primaryTypeSpanish = typeTranslations[primaryType] || primaryType;
     
-    // Aplicar estilo según tipo primario (usando nombres en español)
     $('#pokemonCard')
         .removeClass()
-        .addClass(`pokemon-card card-${primaryTypeSpanish.toLowerCase()}`)
+        .addClass(`pokedex-horizontal bg-${primaryTypeSpanish.toLowerCase()}`)
         .css('display', 'none');
     
-    // Obtener descripción en español
     const description = getDescription(species);
-    
-    // Construir HTML con tipos en español
+    const cryUrl = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`;
+    const audioElement = new Audio(cryUrl);
+
     const html = `
-        <div class="pokemon-header">
-            <span class="pokemon-number">#${pokemon.id.toString().padStart(3, '0')}</span>
-            <h1 class="pokemon-name">${pokemon.name}</h1>
-        </div>
-        
-        <div class="text-center p-4">
-            <div class="pokemon-image-container">
-                <img src="${pokemon.sprites.other['official-artwork'].front_default}" 
-                     class="pokemon-image" 
-                     alt="${pokemon.name}">
-            </div>
-            
-            <p class="pokemon-description">${description}</p>
-            
-            <div class="pokemon-types">
-                ${pokemon.types.map(type => {
-                    const typeName = type.type.name;
-                    const typeSpanish = typeTranslations[typeName] || typeName;
-                    return `
-                        <span class="type-badge" style="background-color: ${typeColors[typeName]}">
-                            ${typeSpanish}
+        <div class="pokedex-left">
+            <div>
+                <div class="pokemon-number">#${pokemon.id.toString().padStart(3, '0')}</div>
+                <h1 class="pokemon-name">${pokemon.name.toUpperCase()}</h1>
+                <p class="pokemon-description">${description}</p>
+                
+                <div class="pokemon-types">
+                    ${pokemon.types.map(type => `
+                        <span class="type-badge" style="background-color: ${typeColors[type.type.name]}">
+                            ${typeTranslations[type.type.name] || type.type.name}
                         </span>
-                    `;
-                }).join('')}
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div class="pokemon-stats">
+                <div class="stat-row">
+                    <span class="stat-label">Categoría:</span>
+                    <span class="stat-value">${getGenus(species)}</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Altura:</span>
+                    <span class="stat-value">${(pokemon.height / 10).toFixed(1)} m</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Peso:</span>
+                    <span class="stat-value">${(pokemon.weight / 10).toFixed(1)} kg</span>
+                </div>
             </div>
         </div>
         
-        <div class="pokemon-stats">
-            <div class="stat-row">
-                <span class="stat-label">Categoría</span>
-                <span class="stat-value">${getGenus(species)}</span>
+        <div class="pokedex-right">
+            <div class="pokemon-image-container">
+                <img src="${pokemon.sprites.other['official-artwork'].front_default || 
+                          pokemon.sprites.front_default}" 
+                     class="pokemon-image clickable-pokemon" 
+                     alt="${pokemon.name}"
+                     data-pokemon-id="${pokemon.id}">
             </div>
-            <div class="stat-row">
-                <span class="stat-label">Altura</span>
-                <span class="stat-value">${(pokemon.height / 10).toFixed(1)} m</span>
-            </div>
-            <div class="stat-row">
-                <span class="stat-label">Peso</span>
-                <span class="stat-value">${(pokemon.weight / 10).toFixed(1)} kg</span>
-            </div>
+            
+            <div id="evolutionContainer"></div>
         </div>
     `;
     
-    // Insertar HTML y mostrar con animación
-    $('#pokemonCard').html(html).fadeIn(500);
+    $('#pokemonCard').html(html).fadeIn(500, function() {
+        $('.clickable-pokemon').on('click', function() {
+            audioElement.currentTime = 0;
+            audioElement.play().catch(e => console.log("Error al reproducir:", e));
+            $(this).addClass('pokemon-clicked');
+            setTimeout(() => $(this).removeClass('pokemon-clicked'), 200);
+        });
+    });
 }
 
+function updateEvolutionDisplay(evolutionChain) {
+    if (evolutionChain.length > 1) {
+        $('#evolutionContainer').html(`
+            <div class="evolution-chain-container">
+                <div class="evolution-chain-title">Cadena Evolutiva</div>
+                <div class="evolution-chain">
+                    ${evolutionChain.map((pokemon, index) => `
+                        ${index > 0 ? '<span class="evolution-arrow">→</span>' : ''}
+                        <div class="evolution-stage">
+                            <img src="${pokemon.image}" 
+                                 class="evolution-image" 
+                                 alt="${pokemon.name}"
+                                 onclick="loadPokemon('${pokemon.name}')">
+                            <span class="evolution-name">${pokemon.name}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `);
+    }
+}
 
-// Funciones auxiliares
 function getDescription(species) {
-    const entry = species.flavor_text_entries.find(e => e.language.name === 'es');
+    const entry = species.flavor_text_entries.find(e => e.language.name === 'es') || 
+                 species.flavor_text_entries.find(e => e.language.name === 'en');
     return entry ? entry.flavor_text.replace(/[\n\f]/g, ' ') : 'Descripción no disponible';
 }
 
 function getGenus(species) {
-    const genus = species.genera.find(g => g.language.name === 'es');
+    const genus = species.genera.find(g => g.language.name === 'es') || 
+                 species.genera.find(g => g.language.name === 'en');
     return genus ? genus.genus : 'Desconocido';
 }
 
 function showError() {
     $('#pokemonCard').html(`
-        <div class="pokemon-header bg-danger text-white">
-            <h1>Error</h1>
-        </div>
-        <div class="text-center p-4">
+        <div class="pokedex-left">
+            <h1 class="text-danger">ERROR</h1>
             <p>No se pudo cargar el Pokémon</p>
         </div>
     `).fadeIn(500);
 }
+
+window.loadPokemon = loadPokemon;
