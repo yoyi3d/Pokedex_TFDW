@@ -13,17 +13,25 @@
 
   <!-- Custom CSS -->
    <link rel="stylesheet" href="css/pokedex_style.css">
+  <!-- fontawsome -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 
 <body>
   <!-- Filtros y controles -->
   <div class="container-fluid bg-danger p-3">
     <div class="d-flex flex-wrap gap-3 justify-content-evenly align-items-center">
+      <button id="homeButton" class="btn btn-home">
+          <i class="fa fa-home"></i> Home
+      </button>
+
+
       <span class="text-white fw-bold">ORDENAR POR</span>
 
       <!-- Desplegable para A-Z y Número -->
       <select class="form-select w-auto" id="sort-options">
-        <option value="">Ordenar por</option>
+        <option value="">Filtrar</option>
         <option value="name">A - Z</option>
         <option value="number">Número</option>
       </select>
@@ -89,11 +97,14 @@
     </div>
   </div>
 
+  
+
 
   <!-- jQuery -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <!-- Script principal -->
   <script src="scripts/pokedex.js"></script>
+  <script src="scripts/pokemonsheet.js"></script>
 </body>
 </html>

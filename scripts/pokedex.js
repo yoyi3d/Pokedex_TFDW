@@ -7,6 +7,24 @@ $(document).ready(function () {
     let currentPage = 1;
     const itemsPerPage = 12;
 
+    $('#homeButton').click(function() {
+        window.location.href = 'browser.html';
+    });
+
+    // 1. Crear el contenedor de la barra de carga y agregarlo al body.
+    $('body').append(`
+        <div id="loading-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 9999;">
+            <div style="width: 80%; max-width: 400px; background-color: #e0e0e0; border-radius: 50px; padding: 5px;">
+                <div id="progress-bar" style="width: 0%; height: 20px; background-color: green; border-radius: 50px;"></div>
+            </div>
+        </div>
+    `);
+
+    // Función para actualizar el progreso
+    function updateProgressBar(progress) {
+        $('#progress-bar').css('width', progress + '%');
+    }
+
     const generationRanges = {
         0: { start: 1, end: 1025},
         1: { start: 1, end: 151 },
@@ -54,6 +72,29 @@ $(document).ready(function () {
         })).catch(() => null);
     }
 
+    // Función para cargar los Pokémon
+    function loadGeneration(genNumber) {
+        const { start, end } = generationRanges[genNumber];
+        $.get('https://pokeapi.co/api/v2/pokemon?limit=100000').then(resp => {
+            const urls = resp.results.map(p => p.url);
+            const totalPokemon = urls.length;
+            let loadedPokemon = 0;
+            
+            // Inicializar la carga de Pokémon
+            return Promise.all(urls.map(url => {
+                return loadPokemonData(url).then(pokemon => {
+                    loadedPokemon++;
+                    updateProgressBar((loadedPokemon / totalPokemon) * 100); // Actualizar barra de progreso
+                    return pokemon;
+                });
+            }));
+        }).then(data => {
+            allPokemonList = data;
+            applyFilters();
+            $('#loading-screen').fadeOut(); // Ocultar la pantalla de carga una vez completado
+        });
+    }
+
     function applyFilters() {
         filteredList = allPokemonList.slice();
 
@@ -79,21 +120,20 @@ $(document).ready(function () {
         renderCards(filteredList);
     }
 
-
     function adjustColor(hex, factor) {
         const r = Math.min(255, Math.max(0, parseInt(hex.substr(1,2), 16) + factor));
         const g = Math.min(255, Math.max(0, parseInt(hex.substr(3,2), 16) + factor));
         const b = Math.min(255, Math.max(0, parseInt(hex.substr(5,2), 16) + factor));
         return `rgb(${r}, ${g}, ${b})`;
     }
-    
+
     function renderCards(pokemonList) {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         const paginatedList = pokemonList.slice(startIndex, endIndex);
-    
+
         pokemonContainer.empty();
-    
+
         paginatedList.forEach(pokemon => {
             const type1 = pokemon.types[0];
             const type2 = pokemon.types[1] || null;
@@ -105,36 +145,29 @@ $(document).ready(function () {
                 ? `background: linear-gradient(135deg, ${adjustColor(base1, -30)}, ${base2}, ${adjustColor(base2, 40)});`
                 : `background: linear-gradient(135deg, ${adjustColor(base1, -30)}, ${base1}, ${adjustColor(base1, 40)});`;
 
-    
             const translatedTypes = pokemon.types.map(t => typeTranslation[t] || t);
             const typeBadges = translatedTypes.map((typeName, index) => {
                 const key = pokemon.types[index];
                 const color = typeColors[key] || '#AAA';
                 return `<span class="badge me-1" style="background-color: ${color}; color: ${getTextColor(color)}; border: 2px solid white; box-shadow: 0 1px 4px rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 12px; font-weight: bold; font-size: 0.75rem;">${typeName}</span>`;
             }).join('');
-    
+
             const infoLabel = pokemon.isAltForm
                 ? `<span class="position-absolute top-0 start-0 m-2 badge bg-warning text-dark">Forma alternativa</span>`
                 : `<span class="position-absolute top-0 start-0 m-2 badge bg-light text-dark">#${pokemon.id}</span>`;
-    
 
-    
             const card = `
             <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4 d-flex align-items-stretch">
                 <div class="card position-relative shadow-sm w-100 d-flex flex-column justify-content-between text-center"
                     style="${gradientStyle} color: ${textColor}; height: 320px; padding: 12px; overflow: hidden;"
-                    data-type1="${type1}" data-type2="${type2 || ''}">
-                    
+                    data-type1="${type1}" data-type2="${type2 || ''}" onclick="goToPokemonDetail('${pokemon.name}')">
                     ${infoLabel}
-    
                     <div class="circle-background position-absolute top-50 start-50 translate-middle" 
                         style="width: 100px; height: 100px; border-radius: 50%; background-color: white; opacity: 0.2; z-index: 0;">
                     </div>
-    
                     <div class="flex-grow-1 d-flex justify-content-center align-items-center" style="z-index: 1; height: 140px;">
                         <img src="${pokemon.image}" alt="${pokemon.name}" style="max-height: 120px; width: auto;">
                     </div>
-    
                     <div style="z-index: 1;">
                         <h5 class="card-title mt-2 mb-1">${pokemon.name}</h5>
                         <div>${typeBadges}</div>
@@ -142,25 +175,18 @@ $(document).ready(function () {
                 </div>
             </div>
             `;
-    
+
             pokemonContainer.append(card);
         });
-    
+
         prevButton.prop('disabled', currentPage === 1);
         nextButton.prop('disabled', currentPage * itemsPerPage >= pokemonList.length);
     }
-    
 
-    function loadGeneration(genNumber) {
-        const { start, end } = generationRanges[genNumber];
-        $.get('https://pokeapi.co/api/v2/pokemon?limit=100000').then(resp => {
-            const urls = resp.results.map(p => p.url);
-            return Promise.all(urls.map(loadPokemonData));
-        }).then(data => {
-            allPokemonList = data;
-            applyFilters();
-        });
-    }
+    // Función para redirigir al detalle del Pokémon
+    window.goToPokemonDetail = function(pokemonName) {
+        window.location.href = `pokemonsheet.html?pokemon=${pokemonName}`;
+    };
 
     $('#filter-type, #filter-generation, #filter-forma').change(applyFilters);
     $('#search-input').on('input', applyFilters);
@@ -173,5 +199,5 @@ $(document).ready(function () {
         if (currentPage * itemsPerPage < filteredList.length) { currentPage++; applyFilters(); }
     });
 
-    loadGeneration(0);
+    loadGeneration(0); // Cargar la generación inicial
 });

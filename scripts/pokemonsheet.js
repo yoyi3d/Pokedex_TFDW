@@ -1,9 +1,14 @@
 $(document).ready(function() {
     $('#loadingSpinner').show();
-    loadPokemon('charizard');
+
+    // Obtener el nombre del Pokémon desde la URL
+    const params = new URLSearchParams(window.location.search);
+    const pokemonName = params.get('pokemon') || 'charizard';
+
+    loadPokemon(pokemonName);
 });
 
-// TIPOS DE INGLÉS A ESPAÑOL
+// Traducciones de tipos
 const typeTranslations = {
     fire: 'FUEGO',
     water: 'AGUA',
@@ -25,7 +30,7 @@ const typeTranslations = {
     steel: 'ACERO'
 };
 
-// COLORES DE LOS TIPOS
+// Colores por tipo
 const typeColors = {
     fire: '#F08030',
     water: '#6890F0',
@@ -47,19 +52,12 @@ const typeColors = {
     steel: '#B8B8D0'
 };
 
-// Función que carga la ficha del Pokémon
 async function loadPokemon(pokemonName) {
     try {
-        // Nombre
         const pokemon = await $.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`);
-        
-        // Categoría
         const species = await $.get(pokemon.species.url);
-        
-        // Muestra solo la imagen del Pokémon y su info...
         displayPokemon(pokemon, species, []);
-        
-        // ...y luego carga la info de la cadena evolutiva (si la tuviera)
+
         try {
             const evolutionChain = await $.get(species.evolution_chain.url);
             const evolutionData = await getEvolutionChain(evolutionChain.chain);
@@ -67,7 +65,7 @@ async function loadPokemon(pokemonName) {
         } catch (e) {
             console.log("No se pudo cargar la cadena evolutiva", e);
         }
-        
+
     } catch (error) {
         console.error('Error:', error);
         showError();
@@ -76,39 +74,38 @@ async function loadPokemon(pokemonName) {
     }
 }
 
-// Función que se encarga de la parte de la línea evolutiva
 async function getEvolutionChain(chain) {
     const evolutionChain = [];
     let current = chain;
-    
+
     while (current && evolutionChain.length < 3) {
         try {
             const pokemonData = await $.get(`https://pokeapi.co/api/v2/pokemon/${current.species.name}`);
-            
+
             evolutionChain.push({
                 name: current.species.name,
                 image: pokemonData.sprites.other['official-artwork'].front_default
             });
-            
+
             current = current.evolves_to[0];
         } catch (e) {
             console.error("Error cargando evolución", e);
             break;
         }
     }
-    
+
     return evolutionChain;
 }
 
 function displayPokemon(pokemon, species) {
     const primaryType = pokemon.types[0].type.name;
     const primaryTypeSpanish = typeTranslations[primaryType] || primaryType;
-    
+
     $('#pokemonCard')
         .removeClass()
         .addClass(`pokedex-horizontal bg-${primaryTypeSpanish.toLowerCase()}`)
         .css('display', 'none');
-    
+
     const description = getDescription(species);
     const cryUrl = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`;
     const audioElement = new Audio(cryUrl);
@@ -119,7 +116,7 @@ function displayPokemon(pokemon, species) {
                 <div class="pokemon-number">#${pokemon.id.toString().padStart(3, '0')}</div>
                 <h1 class="pokemon-name">${pokemon.name.toUpperCase()}</h1>
                 <p class="pokemon-description">${description}</p>
-                
+
                 <div class="pokemon-types">
                     ${pokemon.types.map(type => `
                         <span class="type-badge" style="background-color: ${typeColors[type.type.name]}">
@@ -128,7 +125,7 @@ function displayPokemon(pokemon, species) {
                     `).join('')}
                 </div>
             </div>
-            
+
             <div class="pokemon-stats">
                 <div class="stat-row">
                     <span class="stat-label">Categoría:</span>
@@ -144,7 +141,7 @@ function displayPokemon(pokemon, species) {
                 </div>
             </div>
         </div>
-        
+
         <div class="pokedex-right">
             <div class="pokemon-image-container">
                 <img src="${pokemon.sprites.other['official-artwork'].front_default || 
@@ -153,11 +150,11 @@ function displayPokemon(pokemon, species) {
                      alt="${pokemon.name}"
                      data-pokemon-id="${pokemon.id}">
             </div>
-            
+
             <div id="evolutionContainer"></div>
         </div>
     `;
-    
+
     $('#pokemonCard').html(html).fadeIn(500, function() {
         $('.clickable-pokemon').on('click', function() {
             audioElement.currentTime = 0;
@@ -211,4 +208,5 @@ function showError() {
     `).fadeIn(500);
 }
 
+// Exponer la función para ser llamada desde fuera
 window.loadPokemon = loadPokemon;
