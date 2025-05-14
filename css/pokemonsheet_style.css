@@ -20,10 +20,18 @@
     --acero: #B8B8D0;
 }
 
+body {
+  margin: 0;
+  display: flex;
+  overflow-x: hidden; 
+  overflow-y: hidden;
+  position: relative;
+}
+
 /* Estructura principal*/
 .pokedex-horizontal {
-    width: 1800px;
-    min-height: 1000px;
+    width: 90%;
+    min-height: 80%;
     display: flex;
     position: relative;
     overflow: hidden;
@@ -50,7 +58,50 @@
     padding: 4rem;
 }
 
-/* Estilos para los tipos de los Pokémon */
+.btn-home {
+    background-color: rgb(255, 255, 255); /* Color de fondo rojo */
+    color: rgb(0, 0, 0); /* Texto en blanco */
+    padding: 10px 20px; /* Espaciado alrededor del texto */
+    border-radius: 25px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaciado entre el ícono y el texto */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-home i {
+    margin-right: 8px; /* Espacio entre el icono y el texto */
+}
+
+.btn-home:hover {
+    background-color: var(--type-color); /* Rojo más claro al pasar el ratón */
+    color: white;
+}
+
+/* Clases para el color de fondo del botón de Home */
+.type-fuego { --type-color: var(--fuego); }
+.type-agua { --type-color: var(--agua); }
+.type-planta { --type-color: var(--planta); }
+.type-eléctrico { --type-color: var(--eléctrico); }
+.type-psíquico { --type-color: var(--psíquico); }
+.type-hielo { --type-color: var(--hielo); }
+.type-dragón { --type-color: var(--dragón); }
+.type-siniestro { --type-color: var(--siniestro); }
+.type-hada { --type-color: var(--hada); }
+.type-normal { --type-color: var(--normal); }
+.type-lucha { --type-color: var(--lucha); }
+.type-volador { --type-color: var(--volador); }
+.type-veneno { --type-color: var(--veneno); }
+.type-tierra { --type-color: var(--tierra); }
+.type-roca { --type-color: var(--roca); }
+.type-bicho { --type-color: var(--bicho); }
+.type-fantasma { --type-color: var(--fantasma); }
+.type-acero { --type-color: var(--acero); }
+
+/* Estilos para los tipos de los Pokémon para las tarjetas*/
 .bg-fuego { background-color: #FFF3F0; border-left: 16px solid var(--fuego); }
 .bg-agua { background-color: #F0F7FF; border-left: 16px solid var(--agua); }
 .bg-planta { background-color: #F0FBF0; border-left: 16px solid var(--planta); }

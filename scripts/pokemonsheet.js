@@ -8,6 +8,10 @@ $(document).ready(function() {
     loadPokemon(pokemonName);
 });
 
+$(document).on('click', '#homeButton', function() {
+    window.location.href = 'browser.html';
+});
+
 // Traducciones de tipos
 const typeTranslations = {
     fire: 'FUEGO',
@@ -51,6 +55,7 @@ const typeColors = {
     ghost: '#705898',
     steel: '#B8B8D0'
 };
+
 
 async function loadPokemon(pokemonName) {
     try {
@@ -100,6 +105,7 @@ async function getEvolutionChain(chain) {
 function displayPokemon(pokemon, species) {
     const primaryType = pokemon.types[0].type.name;
     const primaryTypeSpanish = typeTranslations[primaryType] || primaryType;
+    const typeClass = `type-${primaryTypeSpanish.toLowerCase()}`;
 
     $('#pokemonCard')
         .removeClass()
@@ -143,6 +149,11 @@ function displayPokemon(pokemon, species) {
         </div>
 
         <div class="pokedex-right">
+            <div class="d-flex justify-content-end w-100 mb-3">
+                <button id="homeButton" class="btn btn-home ${typeClass}">
+                    <i class="fa fa-home"></i> Home
+                </button>
+            </div>
             <div class="pokemon-image-container">
                 <img src="${pokemon.sprites.other['official-artwork'].front_default || 
                           pokemon.sprites.front_default}" 
