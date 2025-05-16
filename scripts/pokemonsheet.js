@@ -117,11 +117,17 @@ function displayPokemon(pokemon, species) {
     const audioElement = new Audio(cryUrl);
 
     const html = `
-        <div class="pokedex-left">
+
+                 <button id="homeButton" class="btn btn-home ${typeClass}">
+                    <i class="fa fa-home"></i> Home
+                 </button>
+
+            <div class="pokedex-left">
             <div>
                 <div class="pokemon-number">#${pokemon.id.toString().padStart(3, '0')}</div>
                 <h1 class="pokemon-name">${pokemon.name.toUpperCase()}</h1>
                 <p class="pokemon-description">${description}</p>
+
 
                 <div class="pokemon-types">
                     ${pokemon.types.map(type => `
@@ -149,11 +155,6 @@ function displayPokemon(pokemon, species) {
         </div>
 
         <div class="pokedex-right">
-            <div class="d-flex justify-content-end w-100 mb-3">
-                <button id="homeButton" class="btn btn-home ${typeClass}">
-                    <i class="fa fa-home"></i> Home
-                </button>
-            </div>
             <div class="pokemon-image-container">
                 <img src="${pokemon.sprites.other['official-artwork'].front_default || 
                           pokemon.sprites.front_default}" 
