@@ -1,5 +1,5 @@
-/* Variables de colores para tipos Pokémon */
 :root {
+    /* Colores de tipos Pokémon */
     --fuego: #F08030;
     --agua: #6890F0;
     --planta: #78C850;
@@ -18,88 +18,19 @@
     --bicho: #A8B820;
     --fantasma: #705898;
     --acero: #B8B8D0;
-    font-size: 10px;
+    
+    /* Tamaño base */
+    font-size: 14px;
 }
 
-body {
-  display: flex;
-  overflow-x: hidden; 
-  position: relative;
-}
-
-/* Estructura principal*/
+/* Estructura principal */
 .pokedex-horizontal {
     width: 90%;
-    max-width: 1100px; 
-    min-height: auto; 
-    display: flex;
-    position: relative;
+    max-width: 1000px;
+    margin: 2rem auto;
     overflow: hidden;
-    border-radius: 40px;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
-    margin: 2rem auto; 
+    background-color: white;
 }
-
-/* Sección de las descripciones, tipos, altura, peso y categoría */
-.pokedex-left {
-    flex: 1;
-    padding: 2rem; 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.pokedex-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem; 
-}
-
-.btn-home {
-    background-color: rgb(255, 255, 255);
-    color: rgb(0, 0, 0);
-    padding: 8px 16px; 
-    border-radius: 25px;
-    font-size: 1.4rem; 
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px; 
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.btn-home i {
-    margin-right: 6px; 
-}
-
-.btn-home:hover {
-    background-color: var(--type-color);
-    color: white;
-}
-
-/* Clases para el color de fondo del botón de Home */
-.type-fuego { --type-color: var(--fuego); }
-.type-agua { --type-color: var(--agua); }
-.type-planta { --type-color: var(--planta); }
-.type-eléctrico { --type-color: var(--eléctrico); }
-.type-psíquico { --type-color: var(--psíquico); }
-.type-hielo { --type-color: var(--hielo); }
-.type-dragón { --type-color: var(--dragón); }
-.type-siniestro { --type-color: var(--siniestro); }
-.type-hada { --type-color: var(--hada); }
-.type-normal { --type-color: var(--normal); }
-.type-lucha { --type-color: var(--lucha); }
-.type-volador { --type-color: var(--volador); }
-.type-veneno { --type-color: var(--veneno); }
-.type-tierra { --type-color: var(--tierra); }
-.type-roca { --type-color: var(--roca); }
-.type-bicho { --type-color: var(--bicho); }
-.type-fantasma { --type-color: var(--fantasma); }
-.type-acero { --type-color: var(--acero); }
 
 /* Estilos para los tipos de los Pokémon para las tarjetas*/
 .bg-fuego { background-color: #FFF3F0; border-left: 10px solid var(--fuego); }
@@ -121,60 +52,106 @@ body {
 .bg-fantasma { background-color: #F0E8F0; border-left: 10px solid var(--fantasma); }
 .bg-acero { background-color: #F0F0F5; border-left: 10px solid var(--acero); }
 
-/* Texto y tipografía */
+/* Clases para el botón Home */
+.type-fuego { --type-color: var(--fuego); }
+.type-agua { --type-color: var(--agua); }
+.type-planta { --type-color: var(--planta); }
+.type-eléctrico { --type-color: var(--eléctrico); }
+.type-psíquico { --type-color: var(--psíquico); }
+.type-hielo { --type-color: var(--hielo); }
+.type-dragón { --type-color: var(--dragón); }
+.type-siniestro { --type-color: var(--siniestro); }
+.type-hada { --type-color: var(--hada); }
+.type-normal { --type-color: var(--normal); }
+.type-lucha { --type-color: var(--lucha); }
+.type-volador { --type-color: var(--volador); }
+.type-veneno { --type-color: var(--veneno); }
+.type-tierra { --type-color: var(--tierra); }
+.type-roca { --type-color: var(--roca); }
+.type-bicho { --type-color: var(--bicho); }
+.type-fantasma { --type-color: var(--fantasma); }
+.type-acero { --type-color: var(--acero); }
+
+/* Secciones izquierda y derecha */
+.pokedex-left {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.pokedex-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Botón Home */
+.btn-home {
+    background-color: white;
+    color: black;
+    padding: 0.5rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: bold;
+    transition: all 0.3s;
+    align-self: flex-start;
+    border: 2px solid currentColor;
+}
+
+.btn-home:hover {
+    background-color: var(--type-color);
+    color: white;
+    border-color: var(--type-color);
+}
+
+/* Tipografía */
 .pokemon-number {
     font-weight: bold;
     color: rgba(0, 0, 0, 0.3);
-    font-size: 1.8rem; 
-    margin-bottom: 0.8rem; 
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
 }
 
 .pokemon-name {
     font-weight: bold;
-    font-size: 3rem; 
+    font-size: 2rem;
     text-transform: uppercase;
-    margin-bottom: 2rem; 
+    margin-bottom: 1rem;
     color: #333;
 }
 
 .pokemon-description {
     font-style: italic;
     color: #555;
-    line-height: 1.6;
-    margin-bottom: 2rem; 
-    font-size: 1.6rem; 
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
 }
 
-/* Cajas para los tipos */
-.pokemon-types {
-    display: flex;
-    gap: 1rem; 
-    margin-bottom: 2rem; 
-}
-
+/* Tipos de Pokémon */
 .type-badge {
-    padding: 0.8rem 1.6rem; 
-    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
     font-weight: bold;
-    font-size: 1.4rem; 
+    font-size: 0.85rem;
     text-transform: uppercase;
     color: white;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Relativo a las características */
+/* Estadísticas */
 .pokemon-stats {
     background-color: white;
-    padding: 2rem; 
-    border-radius: 1.5rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .stat-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem; 
-    font-size: 1.6rem; 
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
 }
 
 .stat-label {
@@ -190,31 +167,31 @@ body {
 .pokemon-image-container {
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 50%;
-    width: 300px; 
-    height: 300px; 
+    width: 250px;
+    height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 2rem; 
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .pokemon-image {
-    width: 280px; 
-    height: 280px; 
+    width: 90%;
+    height: 90%;
     object-fit: contain;
+    transition: transform 0.3s;
 }
 
 /* Cadena evolutiva */
 .evolution-chain-container {
     width: 100%;
-    margin-top: 2rem; 
 }
 
 .evolution-chain-title {
-    font-size: 1.8rem; 
+    font-size: 1.25rem;
     color: #555;
-    margin-bottom: 1.5rem; 
+    margin-bottom: 1rem;
     font-weight: bold;
     text-align: center;
 }
@@ -223,30 +200,27 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    gap: 1.5rem; 
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    gap: 1rem;
+    flex-wrap: wrap;
     padding-bottom: 1rem;
-    width: 100%;
 }
 
 .evolution-stage {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 150px; 
-    flex-shrink: 0;
+    min-width: 100px;
 }
 
 .evolution-image {
-    width: 120px; 
-    height: 120px; 
+    width: 80px;
+    height: 80px;
     object-fit: contain;
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 50%;
-    padding: 1rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1rem; 
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.5rem;
     transition: transform 0.3s;
     cursor: pointer;
 }
@@ -256,26 +230,22 @@ body {
 }
 
 .evolution-name {
-    font-size: 1.4rem; 
+    font-size: 0.9rem;
     font-weight: bold;
     color: #333;
     text-transform: capitalize;
     text-align: center;
-    max-width: 150px;
     word-break: break-word;
 }
 
-.evolution-arrow {
-    font-size: 2.4rem;
-    color: #666;
-    align-self: center;
-    line-height: 120px; 
-}
-
-/* Efecto al hacer clic en el Pokémon */
+/* Efectos */
 .clickable-pokemon {
     cursor: pointer;
     transition: all 0.2s ease;
+}
+
+.clickable-pokemon:hover {
+    transform: scale(1.05);
 }
 
 .pokemon-clicked {
@@ -283,83 +253,53 @@ body {
     filter: brightness(1.1);
 }
 
-/* Parte Responsive */
-@media (max-width: 2000px) {
+/* Responsive */
+@media (max-width: 992px) {
     .pokedex-horizontal {
         width: 95%;
-        max-width: 1200px; 
-    }
-}
-
-@media (max-width: 1536px) {
-    .pokedex-horizontal {
-        flex-direction: column;
-    }
-    
-    .evolution-image {
-        width: 100px; 
-        height: 100px; 
-    }
-    
-    .evolution-arrow {
-        line-height: 100px; 
-        font-size: 2rem; 
-    }
-}
-
-@media (max-width: 1200px) {
-    .pokedex-horizontal {
-        width: 95%;
-        min-height: auto;
-    }
-    
-    .pokemon-image-container {
-        width: 250px; 
-        height: 250px; 
-    }
-    
-    .pokemon-image {
-        width: 230px; 
-        height: 230px; 
-    }
-    
-    .pokemon-name {
-        font-size: 2.4rem; 
-    }
-    
-    .pokemon-description {
-        font-size: 1.4rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .pokedex-horizontal {
-        flex-direction: column;
-        width: 98%;
-        border-radius: 20px;
-    }
-    
-    .pokedex-left, .pokedex-right {
-        padding: 1.5rem;
-    }
-    
-    .pokemon-name {
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
     }
     
     .pokemon-image-container {
         width: 200px;
         height: 200px;
     }
+}
+
+@media (max-width: 768px) {
+    .pokedex-horizontal {
+        width: 98%;
+    }
     
-    .pokemon-image {
+    .pokemon-name {
+        font-size: 1.75rem;
+    }
+    
+    .pokemon-image-container {
         width: 180px;
         height: 180px;
     }
     
+    .evolution-image {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+@media (max-width: 576px) {
+    .pokemon-name {
+        font-size: 1.5rem;
+    }
+    
+    .pokemon-description {
+        font-size: 0.9rem;
+    }
+    
     .type-badge {
-        padding: 0.6rem 1.2rem;
-        font-size: 1.2rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+    
+    .pokemon-stats {
+        padding: 1rem;
     }
 }

@@ -116,56 +116,59 @@ function displayPokemon(pokemon, species) {
     const cryUrl = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`;
     const audioElement = new Audio(cryUrl);
 
-    const html = `
-
-                 <button id="homeButton" class="btn btn-home ${typeClass}">
-                    <i class="fa fa-home"></i> Home
-                 </button>
-
-            <div class="pokedex-left">
-            <div>
-                <div class="pokemon-number">#${pokemon.id.toString().padStart(3, '0')}</div>
-                <h1 class="pokemon-name">${pokemon.name.toUpperCase()}</h1>
-                <p class="pokemon-description">${description}</p>
-
-
-                <div class="pokemon-types">
-                    ${pokemon.types.map(type => `
-                        <span class="type-badge" style="background-color: ${typeColors[type.type.name]}">
-                            ${typeTranslations[type.type.name] || type.type.name}
-                        </span>
-                    `).join('')}
-                </div>
-            </div>
-
-            <div class="pokemon-stats">
-                <div class="stat-row">
-                    <span class="stat-label">Categoría:</span>
-                    <span class="stat-value">${getGenus(species)}</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Altura:</span>
-                    <span class="stat-value">${(pokemon.height / 10).toFixed(1)} m</span>
-                </div>
-                <div class="stat-row">
-                    <span class="stat-label">Peso:</span>
-                    <span class="stat-value">${(pokemon.weight / 10).toFixed(1)} kg</span>
-                </div>
-            </div>
+   const html = `
+<div class="container-fluid p-0">
+  <div class="row g-0 pokedex-horizontal" style="${getTypeStyle(pokemon.types[0].type.name)}"> 
+    <div class="col-lg-6 pokedex-left p-4">
+      <button id="homeButton" class="btn btn-home ${typeClass} mb-4">
+        <i class="fa fa-home"></i> Home
+      </button>
+      
+      <div class="d-flex flex-column h-100">
+        <div>
+          <div class="pokemon-number">#${pokemon.id.toString().padStart(3, '0')}</div>
+          <h1 class="pokemon-name">${pokemon.name.toUpperCase()}</h1>
+          <p class="pokemon-description">${description}</p>
+          
+          <div class="pokemon-types d-flex gap-2 mb-4">
+            ${pokemon.types.map(type => `
+              <span class="type-badge" style="background-color: ${typeColors[type.type.name]}">
+                ${typeTranslations[type.type.name] || type.type.name}
+              </span>
+            `).join('')}
+          </div>
         </div>
-
-        <div class="pokedex-right">
-            <div class="pokemon-image-container">
-                <img src="${pokemon.sprites.other['official-artwork'].front_default || 
-                          pokemon.sprites.front_default}" 
-                     class="pokemon-image clickable-pokemon" 
-                     alt="${pokemon.name}"
-                     data-pokemon-id="${pokemon.id}">
-            </div>
-
-            <div id="evolutionContainer"></div>
+        
+        <div class="pokemon-stats mt-auto">
+          <div class="stat-row">
+            <span class="stat-label">Categoría:</span>
+            <span class="stat-value">${getGenus(species)}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Altura:</span>
+            <span class="stat-value">${(pokemon.height / 10).toFixed(1)} m</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Peso:</span>
+            <span class="stat-value">${(pokemon.weight / 10).toFixed(1)} kg</span>
+          </div>
         </div>
-    `;
+      </div>
+    </div>
+    
+    <div class="col-lg-6 pokedex-right p-4 d-flex flex-column align-items-center justify-content-center">
+      <div class="pokemon-image-container mb-4">
+        <img src="${pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}" 
+             class="pokemon-image clickable-pokemon" 
+             alt="${pokemon.name}"
+             data-pokemon-id="${pokemon.id}">
+      </div>
+      
+      <div id="evolutionContainer" class="w-100"></div>
+    </div>
+  </div>
+</div>
+`;
 
     $('#pokemonCard').html(html).fadeIn(500, function() {
         $('.clickable-pokemon').on('click', function() {
@@ -218,6 +221,30 @@ function showError() {
             <p>No se pudo cargar el Pokémon</p>
         </div>
     `).fadeIn(500);
+}
+function getTypeStyle(typeName) {
+  const typeStyles = {
+    fire: 'background-color: #FFF3F0;',
+    water: 'background-color: #F0F7FF;',
+    grass: 'background-color: #F0FBF0;',
+    electric: 'background-color: #FFFCE0;',
+    psychic: 'background-color: #FFE0F0;',
+    ice: 'background-color: #F0FFFF;',
+    dragon: 'background-color: #F0E8FF;',
+    dark: 'background-color: #F0E8E0;',
+    fairy: 'background-color: #FFEEF5;',
+    normal: 'background-color: #F5F5F0;',
+    fighting: 'background-color: #FFE8E0;',
+    flying: 'background-color: #F0E8FF;',
+    poison: 'background-color: #F5E0F5;',
+    ground: 'background-color: #FAF0D0;',
+    rock: 'background-color: #F5F0D0;',
+    bug: 'background-color: #F5F5D0;',
+    ghost: 'background-color: #F0E8F0;',
+    steel: 'background-color: #F0F0F5;'
+  };
+  
+  return typeStyles[typeName] || '';
 }
 
 // Exponer la función para ser llamada desde fuera
