@@ -54,6 +54,8 @@ async function fetchPokemon(identifier) {
     try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${identifier}`);
         const data = await response.json();
+
+        const officialArtwork = data.sprites.other['official-artwork'].front_default;
         
         const pokemonData = {
             name: data.name,
@@ -63,7 +65,7 @@ async function fetchPokemon(identifier) {
             weight: data.weight,
             generation: getGenerationByPokemonId(data.id),
             sprites: {
-                front_default: data.sprites.front_default || 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png'
+                front_default: officialArtwork || data.sprites.front_default
             }
         };
         
