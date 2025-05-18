@@ -2,13 +2,15 @@ $(document).ready(function () {
   $('#search-btn').on('click', function () {
     const pokemon = $('#search-input').val().toLowerCase().trim();
     if (pokemon) {
-      window.location.href = `placeholder.html?pokemon=${pokemon}`;
+      const targetUrl = `pokemonsheet.html?pokemon=${pokemon}`;
+      animateAndRedirect(targetUrl);
     }
   });
 
   $('#random-btn').on('click', function () {
-    const randomId = Math.floor(Math.random() * 1010) + 1;
-    window.location.href = `placeholder.html?pokemon=${randomId}`;
+    const randomId = Math.floor(Math.random() * 1025) + 1;
+    const targetUrl = `pokemonsheet.html?pokemon=${randomId}`;
+    animateAndRedirect(targetUrl);
   });
 
   window.animateAndRedirect = function (targetUrl) {
@@ -39,7 +41,7 @@ $(document).ready(function () {
     }, 800);
 
     setTimeout(() => {
-      const OFFSET = '-600px'; // AAAAAAAAAAA
+      const OFFSET = '-600px'; 
 
       redHalf.style.transform = `translateY(${OFFSET})`;
       whiteHalf.style.transform = 'translateY(100%)';
