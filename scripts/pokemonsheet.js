@@ -11,6 +11,9 @@ $(document).ready(function() {
 $(document).on('click', '#homeButton', function() {
     window.location.href = 'browser.html';
 });
+$(document).on('click', '#dexButton', function() {
+    window.location.href = 'pokedex.html';
+});
 
 // Traducciones de tipos
 const typeTranslations = {
@@ -117,54 +120,59 @@ function displayPokemon(pokemon, species) {
     const audioElement = new Audio(cryUrl);
 
    const html = `
-<div class="container-fluid p-0">
-  <div class="row g-0 pokedex-horizontal" style="${getTypeStyle(pokemon.types[0].type.name)}"> 
-    <div class="col-lg-6 pokedex-left p-4">
-      <button id="homeButton" class="btn btn-home ${typeClass} mb-4">
-        <i class="fa fa-home"></i> Home
-      </button>
-      
-      <div class="d-flex flex-column h-100">
-        <div>
-          <div class="pokemon-number">#${pokemon.id.toString().padStart(3, '0')}</div>
-          <h1 class="pokemon-name">${pokemon.name.toUpperCase()}</h1>
-          <p class="pokemon-description">${description}</p>
-          
-          <div class="pokemon-types d-flex gap-2 mb-4">
-            ${pokemon.types.map(type => `
-              <span class="type-badge" style="background-color: ${typeColors[type.type.name]}">
-                ${typeTranslations[type.type.name] || type.type.name}
-              </span>
-            `).join('')}
-          </div>
+  <div class="container-fluid p-0">
+    <div class="row g-0 pokedex-horizontal" style="${getTypeStyle(pokemon.types[0].type.name)}"> 
+      <div class="col-lg-6 pokedex-left p-4">
+        <div class="pokemon-types d-flex justify-content-between">  
+          <button id="homeButton" class="btn btn-home ${typeClass} mb-4">
+              <i class="fa fa-home"></i> Home
+            </button>
+            <button id="dexButton" class="btn btn-dex ${typeClass} mb-4">
+              <i class="fa fa-book"></i> Pokédex
+            </button>
         </div>
         
-        <div class="pokemon-stats mt-auto">
-          <div class="stat-row">
-            <span class="stat-label">Categoría:</span>
-            <span class="stat-value">${getGenus(species)}</span>
+        <div class="d-flex flex-column h-100">
+          <div>
+            <div class="pokemon-number">#${pokemon.id.toString().padStart(3, '0')}</div>
+            <h1 class="pokemon-name">${pokemon.name.toUpperCase()}</h1>
+            <p class="pokemon-description">${description}</p>
+            
+            <div class="pokemon-types d-flex gap-2 mb-4">
+              ${pokemon.types.map(type => `
+                <span class="type-badge" style="background-color: ${typeColors[type.type.name]}">
+                  ${typeTranslations[type.type.name] || type.type.name}
+                </span>
+              `).join('')}
+            </div>
           </div>
-          <div class="stat-row">
-            <span class="stat-label">Altura:</span>
-            <span class="stat-value">${(pokemon.height / 10).toFixed(1)} m</span>
-          </div>
-          <div class="stat-row">
-            <span class="stat-label">Peso:</span>
-            <span class="stat-value">${(pokemon.weight / 10).toFixed(1)} kg</span>
+          
+          <div class="pokemon-stats mt-auto">
+            <div class="stat-row">
+              <span class="stat-label">Categoría:</span>
+              <span class="stat-value">${getGenus(species)}</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Altura:</span>
+              <span class="stat-value">${(pokemon.height / 10).toFixed(1)} m</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Peso:</span>
+              <span class="stat-value">${(pokemon.weight / 10).toFixed(1)} kg</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     
-    <div class="col-lg-6 pokedex-right p-4 d-flex flex-column align-items-center justify-content-center">
-      <div class="pokemon-image-container mb-4">
-        <img src="${pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}" 
-             class="pokemon-image clickable-pokemon" 
-             alt="${pokemon.name}"
-             data-pokemon-id="${pokemon.id}">
-      </div>
-      
-      <div id="evolutionContainer" class="w-100"></div>
+      <div class="col-lg-6 pokedex-right p-4 d-flex flex-column align-items-center justify-content-center">
+        <div class="pokemon-image-container mb-4">
+          <img src="${pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}" 
+              class="pokemon-image clickable-pokemon" 
+              alt="${pokemon.name}"
+              data-pokemon-id="${pokemon.id}">
+        </div>
+        
+        <div id="evolutionContainer" class="w-100"></div>
     </div>
   </div>
 </div>
