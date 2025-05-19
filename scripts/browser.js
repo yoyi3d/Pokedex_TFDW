@@ -58,9 +58,7 @@ $(document).ready(function () {
       });
 
       audio.addEventListener('ended', () => {
-
         overlay.style.opacity = 1;
-
         setTimeout(() => {
           window.location.href = targetUrl;
         }, 1000);

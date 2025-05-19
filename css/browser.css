@@ -79,7 +79,6 @@ html {
   transition: transform 1s ease-in-out, opacity 0.5s ease-in;
 }
 
-
 .pokeball {
   position: fixed;
   width: 34vw;
