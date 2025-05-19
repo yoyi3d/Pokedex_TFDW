@@ -9,55 +9,79 @@ let allPokemonNames = [];
     });
 //Inicializar el juego
 async function initGame() {
-    //Cargar lista completa de Pokémon si no está cargada
+    // Mostrar spinner y ocultar imagen
+    $('#loadingSpinner').show();
+    $('#pokemon-image').hide();
+    
+    // Cargar lista completa de Pokémon si no está cargada
     if (allPokemonNames.length === 0) {
         allPokemonNames = await fetchAllPokemonNames(maxPokemon);
     }
     
-    //Obtener un Pokémon aleatorio
+    // Obtener un Pokémon aleatorio
     const randomId = Math.floor(Math.random() * maxPokemon) + 1;
     pokemonToGuess = await fetchPokemon(randomId);
     
-    //Mostrar la silueta
-    const pokemonImage = document.getElementById('pokemon-image');
-    pokemonImage.src = pokemonToGuess.sprites.front_default;
-    pokemonImage.classList.remove('revealed');
+    // Crear una nueva imagen para precargar
+    const img = new Image();
+    img.src = pokemonToGuess.sprites.front_default;
     
-    //Reiniciar contadores
+    // Cuando la imagen esté cargada
+    img.onload = () => {
+        // Asignar la fuente a la imagen real
+        const pokemonImage = document.getElementById('pokemon-image');
+        pokemonImage.src = pokemonToGuess.sprites.front_default;
+        pokemonImage.classList.remove('revealed');
+        
+        // Ocultar spinner y mostrar imagen
+        $('#loadingSpinner').hide();
+        $('#pokemon-image').show();
+    };
+    
+    // Manejar errores de carga de imagen
+    img.onerror = () => {
+        console.error('Error al cargar la imagen del Pokémon');
+        $('#loadingSpinner').hide();
+        // Podrías mostrar una imagen de placeholder aquí si quieres
+    };
+    
+    // Reiniciar contadores
     attempts = 0;
     document.getElementById('attempts-count').textContent = attempts;
     document.getElementById('hints-container').innerHTML = '';
     document.getElementById('suggestions-container').innerHTML = '';
     
-    console.log('Pokémon a adivinar:', pokemonToGuess.name); //Para debug
+    console.log('Pokémon a adivinar:', pokemonToGuess.name); // Para debug
 }
 
-//Manejar el intento de adivinar
 async function handleGuess() {
     const guessInput = document.getElementById('pokemon-guess');
     const guess = guessInput.value.trim().toLowerCase();
     
     if (!guess) return;
     
-    //Obtener datos del Pokémon adivinado
+    // Obtener datos del Pokémon adivinado
     const guessedPokemon = await fetchPokemon(guess);
     
     attempts++;
     document.getElementById('attempts-count').textContent = attempts;
     
-    //Comparar con el Pokémon a adivinar
+    // Comparar con el Pokémon a adivinar
     comparePokemon(guessedPokemon);
     
-    //Limpiar el input y sugerencias
+    // Limpiar el input y sugerencias
     guessInput.value = '';
     document.getElementById('suggestions-container').innerHTML = '';
     
-    //Comprobar si acertó
+    // Comprobar si acertó
     if (guessedPokemon.name === pokemonToGuess.name) {
         const pokemonImage = document.getElementById('pokemon-image');
         pokemonImage.classList.add('revealed');
         
         setTimeout(() => {
+            // Mostrar spinner mientras carga el nuevo Pokémon
+            $('#loadingSpinner').show();
+            $('#pokemon-image').hide();
             initGame(); // Reiniciar juego
         }, 2500);
     }
