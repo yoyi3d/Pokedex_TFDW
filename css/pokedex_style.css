@@ -89,3 +89,22 @@
     color: white;
     border-color: #FF6347;
 }
+
+#prev-button, #next-button {
+  background: linear-gradient(to right, #ffffff, #ffffff); /* rojo fuego a naranja */
+  border: none;
+  color: rgb(102, 102, 102);
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+
+#prev-button:hover, #next-button:hover {
+  background: linear-gradient(to right, #ff0000, #ff0000); /* naranja a dorado */
+  color: white;
+  cursor: pointer;
+    transform: scale(1.05);
+}

@@ -141,11 +141,17 @@ $(document).ready(function () {
             const base2 = type2 ? (typeColors[type2] || '#FFF') : null;
             const textColor = getTextColor(base1);
 
-            const gradientStyle = base2
-                ? `background: linear-gradient(135deg, ${adjustColor(base1, -30)}, ${base2}, ${adjustColor(base2, 40)});`
-                : `background: linear-gradient(135deg, ${adjustColor(base1, -30)}, ${base1}, ${adjustColor(base1, 40)});`;
+const gradientStyle = base2
+    ? `background: linear-gradient(135deg, ${base1} 0%, ${base1} 20%, ${base2} 80%, ${base2} 100%);`
+    : `background: linear-gradient(135deg, ${adjustColor(base1, -40)} 0%, ${base1} 50%, ${adjustColor(base1, 40)} 100%);`;
+
+
+
+
+
 
             const translatedTypes = pokemon.types.map(t => typeTranslation[t] || t);
+
             const typeBadges = translatedTypes.map((typeName, index) => {
                 const key = pokemon.types[index];
                 const color = typeColors[key] || '#AAA';
