@@ -112,14 +112,12 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40vw;
+  width: 50vw;
   z-index: 2;
-  display: flex;
   border: 5px solid black;
   border-radius: 2rem;
   background-color: white;
   overflow: hidden;
-  align-items: center;
   transition: all 1s ease;
 }
 
@@ -185,8 +183,8 @@ html {
 
 .pikachu-btn {
   position: fixed;
-  bottom: -6vh;
-  left: -8vw;
+  bottom: -0.5vh;
+  left: -7vw;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -195,7 +193,7 @@ html {
 }
 
 .pikachu-img {
-  width: 25vw; 
+  width: 25vw;
   max-width: none;
   transition: transform 0.2s ease, filter 0.2s ease;
   animation: pikachu-move 15s ease-in-out infinite;
@@ -207,4 +205,138 @@ html {
   50% { transform: rotate(10deg) translateY(10px); }
   75% { transform: rotate(0deg) translateY(0px); }
   100% { transform: rotate(10deg) translateY(10px); }
+}
+
+/* ---- RESPONSIVE MEJORAS MOVIL ---- */
+@media (max-width: 576px) {
+  .search-bar {
+    max-width: 90vw;
+    width: auto;
+    height: auto;
+  }
+
+  .search-input::placeholder {
+    content: "\00a0";
+  }
+
+  #search-input::placeholder {
+    content: "\00a0";
+  }
+
+  .search-input {
+    font-size: 1.3rem;
+  }
+
+  .search-input::placeholder {
+    content: unset;
+  }
+
+  .search-input::placeholder {
+    color: #999;
+  }
+
+  .search-input::placeholder {
+    content: unset;
+  }
+
+  input#search-input::placeholder {
+    content: unset;
+  }
+
+  input#search-input::placeholder {
+    color: #999;
+  }
+
+  input#search-input::placeholder {
+    content: unset;
+  }
+
+  input#search-input::placeholder {
+    color: #999;
+  }
+
+  input#search-input::placeholder {
+    content: unset;
+  }
+
+  input#search-input::placeholder {
+    content: unset;
+  }
+
+  input#search-input::placeholder {
+    content: unset;
+  }
+
+  .search-input::placeholder {
+    content: unset;
+  }
+
+  input#search-input::placeholder {
+    content: unset;
+  }
+
+  input#search-input::placeholder {
+    color: #999;
+  }
+
+  .search-input::placeholder {
+    content: unset;
+  }
+
+  input#search-input::placeholder {
+    content: unset;
+  }
+
+  .search-input {
+    font-size: 1.3rem;
+  }
+
+  #search-input::placeholder {
+    content: unset;
+    color: #999;
+  }
+
+  #search-input {
+    font-size: 1.3rem;
+  }
+
+  #search-input::placeholder {
+    content: '¡Busca!';
+    color: #999;
+  }
+
+  .pikachu-img {
+    width: 55vw;
+  }
+
+  .pikachu-btn {
+    bottom: -2vh !important;
+    left: -10vw !important;
+  }
+
+  .pokeball {
+    width: 45vw;
+    height: 45vw;
+  }
+
+  .top-left {
+    top: -25vw;
+    left: -15vw;
+  }
+
+  .bottom-right {
+    bottom: -25vw;
+    right: -20vw;
+  }
+
+  .buttons-group {
+    flex-direction: column;
+    gap: 1rem;
+    top: 65% !important;
+  }
+
+  .fixed-button {
+    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
+  }
 }
