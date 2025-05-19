@@ -158,7 +158,7 @@ $(document).ready(function () {
 
             const card = `
             <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4 d-flex align-items-stretch">
-                <div class="card position-relative shadow-sm w-100 d-flex flex-column justify-content-between text-center"
+                <div class="card position-relative shadow-sm w-100 d-flex flex-column justify-content-between text-center tilt-card"
                     style="${gradientStyle} color: ${textColor}; height: 320px; padding: 12px; overflow: hidden;"
                     data-type1="${type1}" data-type2="${type2 || ''}" onclick="goToPokemonDetail('${pokemon.name}')">
                     ${infoLabel}
@@ -175,6 +175,15 @@ $(document).ready(function () {
                 </div>
             </div>
             `;
+
+        $('.tilt-card').tilt({
+          maxTilt: 30,
+          perspective: 1300,
+          scale: 1.04,
+          speed: 1000,
+          transition: true
+         });
+
 
             pokemonContainer.append(card);
         });
