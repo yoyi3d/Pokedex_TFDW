@@ -216,9 +216,13 @@ function getGenus(species) {
 
 function showError() {
     $('#pokemonCard').html(`
-        <div class="pokedex-left">
-            <h1 class="text-danger">ERROR</h1>
-            <p>No se pudo cargar el Pokémon</p>
+        <div class="pokedex-horizontal bg-light p-4 d-flex flex-column align-items-center justify-content-center text-center">
+            <img src="resources/img/Pikachu_Depresion.png" alt="Pikachu triste" class="mb-4" style="max-width: 200px;">
+            <h2 class="text-danger mb-3">Lo sentimos, este Pokémon no existe</h2>
+            <p class="mb-4">Prueba a reescribir el nombre o busca en todos para encontrarlo.</p>
+            <a href="browser.html" class="btn btn-outline-primary">
+                <i class="fa fa-arrow-left me-2"></i>Volver a la página principal
+            </a>
         </div>
     `).fadeIn(500);
 }
