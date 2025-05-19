@@ -7,7 +7,7 @@ $(document).ready(function () {
     let currentPage = 1;
     const itemsPerPage = 12;
 
-    $('#homeButton').click(function() {
+    $('#homeButton').click(function () {
         window.location.href = 'browser.html';
     });
 
@@ -26,7 +26,7 @@ $(document).ready(function () {
     }
 
     const generationRanges = {
-        0: { start: 1, end: 1025},
+        0: { start: 1, end: 1025 },
         1: { start: 1, end: 151 },
         2: { start: 152, end: 251 },
         3: { start: 252, end: 386 },
@@ -79,19 +79,19 @@ $(document).ready(function () {
             const urls = resp.results.map(p => p.url);
             const totalPokemon = urls.length;
             let loadedPokemon = 0;
-            
+
             // Inicializar la carga de Pokémon
             return Promise.all(urls.map(url => {
                 return loadPokemonData(url).then(pokemon => {
                     loadedPokemon++;
-                    updateProgressBar((loadedPokemon / totalPokemon) * 100); // Actualizar barra de progreso
+                    updateProgressBar((loadedPokemon / totalPokemon) * 100);
                     return pokemon;
                 });
             }));
         }).then(data => {
             allPokemonList = data;
             applyFilters();
-            $('#loading-screen').fadeOut(); // Ocultar la pantalla de carga una vez completado
+            $('#loading-screen').fadeOut();
         });
     }
 
@@ -121,98 +121,157 @@ $(document).ready(function () {
     }
 
     function adjustColor(hex, factor) {
-        const r = Math.min(255, Math.max(0, parseInt(hex.substr(1,2), 16) + factor));
-        const g = Math.min(255, Math.max(0, parseInt(hex.substr(3,2), 16) + factor));
-        const b = Math.min(255, Math.max(0, parseInt(hex.substr(5,2), 16) + factor));
+        const r = Math.min(255, Math.max(0, parseInt(hex.substr(1, 2), 16) + factor));
+        const g = Math.min(255, Math.max(0, parseInt(hex.substr(3, 2), 16) + factor));
+        const b = Math.min(255, Math.max(0, parseInt(hex.substr(5, 2), 16) + factor));
         return `rgb(${r}, ${g}, ${b})`;
     }
 
-    function renderCards(pokemonList) {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const paginatedList = pokemonList.slice(startIndex, endIndex);
+function renderCards(pokemonList) {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedList = pokemonList.slice(startIndex, endIndex);
 
-        pokemonContainer.empty();
+    pokemonContainer.empty();
 
-        paginatedList.forEach(pokemon => {
-            const type1 = pokemon.types[0];
-            const type2 = pokemon.types[1] || null;
-            const base1 = typeColors[type1] || '#FFF';
-            const base2 = type2 ? (typeColors[type2] || '#FFF') : null;
-            const textColor = getTextColor(base1);
+    paginatedList.forEach(pokemon => {
+        const type1 = pokemon.types[0];
+        const type2 = pokemon.types[1] || null;
+        const base1 = typeColors[type1] || '#FFF';
+        const base2 = type2 ? (typeColors[type2] || '#FFF') : null;
+        const textColor = getTextColor(base1);
 
-const gradientStyle = base2
-    ? `background: linear-gradient(135deg, ${base1} 0%, ${base1} 20%, ${base2} 80%, ${base2} 100%);`
-    : `background: linear-gradient(135deg, ${adjustColor(base1, -40)} 0%, ${base1} 50%, ${adjustColor(base1, 40)} 100%);`;
+        const gradientStyle = base2
+            ? `background: linear-gradient(135deg, ${base1} 0%, ${base1} 20%, ${base2} 80%, ${base2} 100%);`
+            : `background: linear-gradient(135deg, ${adjustColor(base1, -40)} 0%, ${base1} 50%, ${adjustColor(base1, 40)} 100%);`;
 
+        const translatedTypes = pokemon.types.map(t => typeTranslation[t] || t);
 
+        // Limpiar nombre visual (sin sufijos como -gmax, -alola, etc.)
+        const cleanName = pokemon.name
+            .replace(/-gmax|-gigantamax/, '')
+            .replace(/-alola/, '')
+            .replace(/-galar/, '')
+            .replace(/-hisui/, '')
+            .replace(/-paldea/, '')
+            .replace(/-mega/, '')
+            .replace(/-mega-x/, '')
+            .replace(/-mega-y/, '')
+            .replace(/-/g, ' '); // Reemplaza guiones restantes por espacios
 
+        // Determinar la etiqueta según la forma
+        let formLabel = `#${pokemon.id}`;
+        if (pokemon.name.includes('gmax') || pokemon.name.includes('gigantamax')) {
+            formLabel = 'Forma Gigamax';
+        } else if (pokemon.name.includes('alola')) {
+            formLabel = 'Forma Alola';
+        } else if (pokemon.name.includes('galar')) {
+            formLabel = 'Forma Galar';
+        } else if (pokemon.name.includes('hisui')) {
+            formLabel = 'Forma Hisui';
+        } else if (pokemon.name.includes('paldea')) {
+            formLabel = 'Forma Paldea';
+        } else if (pokemon.name.includes('mega')) {
+            formLabel = 'Mega Evolución';
+        } else if (pokemon.isAltForm) {
+            formLabel = 'Forma alternativa';
+        }
 
-
-
-            const translatedTypes = pokemon.types.map(t => typeTranslation[t] || t);
-
-            const typeBadges = translatedTypes.map((typeName, index) => {
-                const key = pokemon.types[index];
-                const color = typeColors[key] || '#AAA';
-                return `<span class="badge me-1" style="background-color: ${color}; color: ${getTextColor(color)}; border: 2px solid white; box-shadow: 0 1px 4px rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 12px; font-weight: bold; font-size: 0.75rem;">${typeName}</span>`;
-            }).join('');
-
-            const infoLabel = pokemon.isAltForm
-                ? `<span class="position-absolute top-0 start-0 m-2 badge bg-warning text-dark">Forma alternativa</span>`
-                : `<span class="position-absolute top-0 start-0 m-2 badge bg-light text-dark">#${pokemon.id}</span>`;
-
-            const card = `
+        const card = `
             <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-4 d-flex align-items-stretch">
-                <div class="card position-relative shadow-sm w-100 d-flex flex-column justify-content-between text-center tilt-card"
-                    style="${gradientStyle} color: ${textColor}; height: 320px; padding: 12px; overflow: hidden;"
+                <div class="card position-relative shadow-sm w-100 tilt-card d-flex flex-column text-center"
+                    style="${gradientStyle} color: ${textColor}; height: 350px; padding: 12px; overflow: hidden; transform-style: preserve-3d;"
                     data-type1="${type1}" data-type2="${type2 || ''}" onclick="goToPokemonDetail('${pokemon.name}')">
-                    ${infoLabel}
-                    <div class="circle-background position-absolute top-50 start-50 translate-middle" 
-                        style="width: 100px; height: 100px; border-radius: 50%; background-color: white; opacity: 0.2; z-index: 0;">
+
+                    <!-- Etiqueta de forma -->
+                    <div style="z-index: 3; transform: translateZ(20px); margin-bottom: 8px; text-align: left;">
+                        <span class="badge text-light" style="background-color: rgba(0,0,0,0.5); font-size: 0.8rem;">
+                            ${formLabel}
+                        </span>
                     </div>
-                    <div class="flex-grow-1 d-flex justify-content-center align-items-center" style="z-index: 1; height: 140px;">
-                        <img src="${pokemon.image}" alt="${pokemon.name}" style="max-height: 120px; width: auto;">
+
+                    <!-- Contenedor con imagen -->
+                    <div style="position: relative; flex-grow: 1; height: 220px; z-index: 2; transform: translateZ(20px);">
+                        <div style="position: absolute; width: 140px; height: 140px; background-color: white; opacity: 0.2; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;"></div>
+                        <img src="${pokemon.image}" alt="${cleanName}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); height: 140px; width: auto; object-fit: contain; z-index: 2;">
                     </div>
-                    <div style="z-index: 1;">
-                        <h5 class="card-title mt-2 mb-1">${pokemon.name}</h5>
-                        <div>${typeBadges}</div>
+
+                    <!-- Nombre del Pokémon -->
+                    <div style="z-index: 3; transform: translateZ(20px); margin-top: 6px;">
+                        <h5 class="card-title m-0" style="font-size: 1.8rem;">${cleanName}</h5>
                     </div>
+
+                    <!-- Tipos -->
+                    <div class="d-flex justify-content-center gap-2 mt-2" style="z-index: 3; transform: translateZ(20px);">
+                        ${translatedTypes.map((typeName, index) => {
+                            const key = pokemon.types[index];
+                            const color = typeColors[key] || '#AAA';
+                            return `
+                                <span class="badge" style="
+                                    background-color: ${color};
+                                    color: ${getTextColor(color)};
+                                    border: 2px solid white;
+                                    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+                                    padding: 6px 12px;
+                                    border-radius: 12px;
+                                    font-weight: bold;
+                                    font-size: 0.85rem;
+                                    min-width: 80px;
+                                    text-align: center;
+                                ">${typeName}</span>`;
+                        }).join('')}
+                    </div>
+
                 </div>
             </div>
-            `;
+        `;
 
         $('.tilt-card').tilt({
-          maxTilt: 30,
-          perspective: 1300,
-          scale: 1.04,
-          speed: 1000,
-          transition: true
-         });
-
-
-            pokemonContainer.append(card);
+            maxTilt: 30,
+            perspective: 1300,
+            scale: 1.04,
+            speed: 1000,
+            transition: true
         });
 
-        prevButton.prop('disabled', currentPage === 1);
-        nextButton.prop('disabled', currentPage * itemsPerPage >= pokemonList.length);
-    }
+        pokemonContainer.append(card);
+    });
+
+    prevButton.prop('disabled', currentPage === 1);
+    nextButton.prop('disabled', currentPage * itemsPerPage >= pokemonList.length);
+}
+
+
+
 
     // Función para redirigir al detalle del Pokémon
-    window.goToPokemonDetail = function(pokemonName) {
+    window.goToPokemonDetail = function (pokemonName) {
         window.location.href = `pokemonsheet.html?pokemon=${pokemonName}`;
     };
 
-    $('#filter-type, #filter-generation, #filter-forma').change(applyFilters);
-    $('#search-input').on('input', applyFilters);
-    $('#sort-options').change(applyFilters);
-
-    prevButton.click(() => {
-        if (currentPage > 1) { currentPage--; applyFilters(); }
-    });
-    nextButton.click(() => {
-        if (currentPage * itemsPerPage < filteredList.length) { currentPage++; applyFilters(); }
+    $('#filter-type, #filter-generation, #filter-forma, #sort-options').change(function () {
+        currentPage = 1;
+        applyFilters();
     });
 
-    loadGeneration(0); // Cargar la generación inicial
+    $('#search-input').on('input', function () {
+        currentPage = 1;
+        applyFilters();
+    });
+
+    prevButton.click(function () {
+        if (currentPage > 1) {
+            currentPage--;
+            applyFilters();
+        }
+    });
+
+    nextButton.click(function () {
+        if (currentPage * itemsPerPage < filteredList.length) {
+            currentPage++;
+            applyFilters();
+        }
+    });
+
+    loadGeneration(0);
 });
