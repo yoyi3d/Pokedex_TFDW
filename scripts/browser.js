@@ -1,14 +1,10 @@
 $(document).ready(function () {
-<<<<<<< Updated upstream
-=======
-
   if (window.innerWidth <= 576) {
     $('#search-input').attr('placeholder', '¡Busca!');
   } else {
     $('#search-input').attr('placeholder', 'Busca tu Pokémon');
   }
 
->>>>>>> Stashed changes
   $('#search-btn').on('click', function () {
     const pokemon = $('#search-input').val().toLowerCase().trim();
     if (pokemon) {
@@ -68,9 +64,7 @@ $(document).ready(function () {
       });
 
       audio.addEventListener('ended', () => {
-
         overlay.style.opacity = 1;
-
         setTimeout(() => {
           window.location.href = targetUrl;
         }, 1000);
