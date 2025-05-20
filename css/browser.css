@@ -183,8 +183,8 @@ html {
 
 .pikachu-btn {
   position: fixed;
-  bottom: -0.5vh;
-  left: -7vw;
+  bottom: -3vh;
+  left: -5vw;
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -339,4 +339,9 @@ html {
     font-size: 1rem;
     padding: 0.6rem 1.5rem;
   }
+}
+
+#video-btn:hover img {
+  transform: scale(1.1);
+  cursor: pointer;
 }

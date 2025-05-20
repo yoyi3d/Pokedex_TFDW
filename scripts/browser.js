@@ -28,10 +28,10 @@ $(document).ready(function () {
 
     const audio = new Audio('resources/audio/pokeball_open.mp3');
 
-    document.querySelectorAll('.fixed-button, .pokeball, .pikachu-btn').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transition = 'opacity 0.5s ease';
-    });
+   document.querySelectorAll('.fixed-button, .pokeball, .pikachu-btn, #video-btn').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transition = 'opacity 0.5s ease';
+});
 
     searchBar.style.transition = 'all 0.8s ease-in-out';
     searchBar.style.width = '60px';
@@ -47,7 +47,7 @@ $(document).ready(function () {
     }, 800);
 
     setTimeout(() => {
-      const OFFSET = '-600px'; 
+      const OFFSET = '-600px';
 
       redHalf.style.transform = `translateY(${OFFSET})`;
       whiteHalf.style.transform = 'translateY(100%)';
@@ -71,4 +71,15 @@ $(document).ready(function () {
       });
     }, 1300);
   };
+
+    $('#video-btn').on('click', function () {
+    const videoUrl = 'https://www.youtube.com/embed/R3Y525VJ4ZI?autoplay=1';
+    $('#youtube-player').attr('src', videoUrl);
+    const modal = new bootstrap.Modal(document.getElementById('videoModal'));
+    modal.show();
+  });
+
+  $('#videoModal').on('hidden.bs.modal', function () {
+    $('#youtube-player').attr('src', '');
+  });
 });
