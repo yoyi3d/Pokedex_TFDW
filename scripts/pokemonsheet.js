@@ -9,7 +9,7 @@ $(document).ready(function() {
 });
 
 $(document).on('click', '#homeButton', function() {
-    window.location.href = 'browser.html';
+    window.location.href = 'index.html';
 });
 $(document).on('click', '#dexButton', function() {
     window.location.href = 'pokedex.html';
@@ -228,7 +228,7 @@ function showError() {
             <img src="resources/img/Pikachu_Depresion.png" alt="Pikachu triste" class="mb-4" style="max-width: 200px;">
             <h2 class="text-danger mb-3">Lo sentimos, este Pokémon no existe</h2>
             <p class="mb-4">Prueba a reescribir el nombre o busca en todos para encontrarlo.</p>
-            <a href="browser.html" class="btn btn-outline-primary">
+            <a href="index.html" class="btn btn-outline-primary">
                 <i class="fa fa-arrow-left me-2"></i>Volver a la página principal
             </a>
         </div>

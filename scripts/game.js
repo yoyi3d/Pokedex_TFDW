@@ -5,7 +5,7 @@ const maxPokemon = 1025;
 let allPokemonNames = [];
 
  document.getElementById('homeButton').addEventListener('click', function() {
-        window.location.href = 'browser.html';
+        window.location.href = 'index.html';
     });
 //Inicializar el juego
 async function initGame() {

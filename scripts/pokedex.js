@@ -8,7 +8,7 @@ $(document).ready(function () {
     const itemsPerPage = 12;
 
     $('#homeButton').click(function () {
-        window.location.href = 'browser.html';
+        window.location.href = 'index.html';
     });
 
     // 1. Crear el contenedor de la barra de carga y agregarlo al body.
