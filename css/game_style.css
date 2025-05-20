@@ -1,7 +1,7 @@
 body, html {
     height: 100%;
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Comic Sans MS';
 }
 
 #pokemon-image {
@@ -58,6 +58,11 @@ body, html {
 /* Contenedor de sugerencias */
 #suggestions-container {
     gap: 0.5rem;
+}
+
+#red-zone {
+    background-color: #fc3c3c;
+    height: 50vh;
 }
 
 .suggestion-item {
