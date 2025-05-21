@@ -42,7 +42,6 @@ async function initGame() {
     img.onerror = () => {
         console.error('Error al cargar la imagen del Pokémon');
         $('#loadingSpinner').hide();
-        // Podrías mostrar una imagen de placeholder aquí si quieres
     };
     
     // Reiniciar contadores
