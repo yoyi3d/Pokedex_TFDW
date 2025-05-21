@@ -261,7 +261,7 @@ body {
 .pikachu-btn {
   position: fixed;
   bottom: -3vh;
-  left: -5vw;
+  left: -3vw;
   z-index: var(--z-pikachu);
   display: flex;
   flex-direction: column;
